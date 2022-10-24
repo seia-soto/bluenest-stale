@@ -1,0 +1,51 @@
+{
+  "name": "bluenest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^12.3.1",
+    "@types/node": "^18.11.3",
+    "@types/oauth": "^0.9.1",
+    "@types/react": "18.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.10",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.11",
+    "@chakra-ui/react": "^2.3.6",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "cookies-next": "^2.1.1",
+    "fast-jwt": "^1.7.1",
+    "framer-motion": "^7.6.1",
+    "ioredis": "^5.2.3",
+    "nanoid": "^4.0.0",
+    "next": "^12.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "talkr": "^3.3.7",
+    "twitter-api-sdk": "^1.2.1"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "twitter-api-sdk@1.2.1": "patches/twitter-api-sdk@1.2.1.patch"
+    }
+  }
+}

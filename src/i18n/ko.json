@@ -1,0 +1,79 @@
+{
+  "_": {
+    "error": "죄송합니다. 저희 서버가 작업을 완료하지 못하여 이 화면을 표시할 수 없습니다. 개발자에게 이 사실을 알렸으나 새로고침하는 것이 도움이 될 수 있습니다."
+  },
+  "nav": {
+    "account": {
+      "heading": "계정",
+      "menu": {
+        "requestSessionForcibly": "강제 로그인",
+        "revokeSessionForcibly": "강제 로그아웃"
+      }
+    }
+  },
+  "about": {
+    "heading": {
+      "a": "환상적인 내 트윗",
+      "b": "블로그로 만들자"
+    },
+    "action": "블로그 시작하기",
+    "a": {
+      "paragraph": {
+        "a": "많은 사람들이 마크다운부터 아름다운 것까지 고유한 블로그 플랫폼을 고민하는 것을 봤어요.",
+        "b": "하지만 여러분은 편안할 때 글을 제일 잘 쓴다고 믿어요.",
+        "c": "그리고 트위터는 어떻게 보면 글을 쓰기에 정말 좋은 공간이에요.",
+        "d": "Bluenest를 쓰고 트위터에서 계속하고 준비되면 게시하세요!"
+      }
+    }
+  },
+  "connect": {
+    "authorize": {
+      "heading": "Bluenest가 여러분의 허락을 구합니다.",
+      "paragraph": {
+        "a": "Bluenest를 사용하려면 Twitter 계정의 2가지 요소가 필요합니다.",
+        "b": "첫 번째로 트위터 아이디가 변경되어도 계속해서 글을 쓸 수 있게 고유ID를 조회해야 합니다.",
+        "c": "두 번째로 저희 시스템으로 컨텐츠를 이전하기 위해 여러분의 트윗을 읽어야 합니다.",
+        "d": "Bluenest는 Twitter 사용자 이름을 제외한 사람이 식별할 수 있는 정보를 읽지 않으며 여러분의 Twitter 접근 코드를 서버에 저장하지 않아 로그아웃 시에는 더 이상 여러분의 Twitter에 접근할 수 없습니다."
+      },
+      "action": {
+        "allow": "네, Twitter로 로그인하겠습니다.",
+        "deny": "아니요, 로그아웃해주세요."
+      }
+    },
+    "revoke": {
+      "heading": "Bluenest에서 로그아웃되었습니다.",
+      "paragraph": "Bluenest는 여러분의 Twitter 접근 코드를 서버에 저장하지 않기 때문에 더 이상 여러분의 계정에 접근할 수 없습니다. 하지만 완벽히 접근을 취소하기 위해서는 Twitter 설정에서 Bluenest 접근을 차단해야 합니다.",
+      "action": {
+        "back": "아니요, 이 정도로 괜찮습니다.",
+        "complete": "네, Twitter 설정으로 이동해주세요."
+      }
+    }
+  },
+  "dashboard": {
+    "manual": {
+      "heading": "트윗을 Bluenest로 가져오세요",
+      "paragraph": "자신의 트윗 링크를 아래에 붙여넣으면 바로 글을 가져올 수 있어요.",
+      "placeholder": "Twitter.com 링크",
+      "action": {
+        "import": "트윗 가져오기"
+      },
+      "error": {
+        "heading": "잘못된 트윗 링크",
+        "paragraph": "트윗 화면에서 주소창을 복사하거나 링크 공유하여 https://twitter.com/username/... 형식으로 입력해주세요. 본인의 트윗만 가져올 수 있습니다."
+      }
+    },
+    "recents": {
+      "heading": "최근 작성하신 트윗들이예요",
+      "paragraph": "탭해서 바로 Bluenest로 가져오세요.",
+      "reauthorizationRequired": {
+        "statusText": {
+          "a": "보안을 위해 여러분의 트위터 접근 코드는 오래 보관하지 않아요.",
+          "b": "트윗을 가져오기 위해 다시 로그인할까요?"
+        },
+        "action": {
+          "continue": "네, 다시 로그인할래요!"
+        }
+      }
+    }
+  }
+}

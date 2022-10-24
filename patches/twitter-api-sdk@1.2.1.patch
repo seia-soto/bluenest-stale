@@ -1,0 +1,48 @@
+diff --git a/dist/OAuth2User.d.ts b/dist/OAuth2User.d.ts
+index eabf620deb2babd737bd4186b4da2828fa6a5510..a71a8f16069b255833b18fea6d39a9b2aaa030d9 100644
+--- a/dist/OAuth2User.d.ts
++++ b/dist/OAuth2User.d.ts
+@@ -70,14 +70,14 @@ export declare class OAuth2User implements AuthClient {
+     /**
+      * Request an access token
+      */
+-    requestAccessToken(code?: string): Promise<{
++    requestAccessToken(code?: string, code_verifier?: string): Promise<{
+         token: Token;
+     }>;
+     /**
+      * Revoke an access token
+      */
+     revokeAccessToken(): Promise<RevokeAccessTokenResponse>;
+-    generateAuthURL(options: GenerateAuthUrlOptions): string;
++    generateAuthURL(options: GenerateAuthUrlOptions): [string, string];
+     getAuthHeader(): Promise<AuthHeader>;
+ }
+ export {};
+diff --git a/dist/OAuth2User.js b/dist/OAuth2User.js
+index 1c6f6e96a006ceef43c42eeeeabe55b9c56d71b9..9707674d3391d8ed28c5761007aa45fe3f73b16e 100644
+--- a/dist/OAuth2User.js
++++ b/dist/OAuth2User.js
+@@ -98,9 +98,11 @@ class OAuth2User {
+     /**
+      * Request an access token
+      */
+-    async requestAccessToken(code) {
++    async requestAccessToken(code, code_verifier) {
+         const { client_id, client_secret, callback, request_options } = __classPrivateFieldGet(this, _OAuth2User_options, "f");
+-        const code_verifier = __classPrivateFieldGet(this, _OAuth2User_code_verifier, "f");
++        if (!code_verifier) {
++            code_verifier = __classPrivateFieldGet(this, _OAuth2User_code_verifier, "f");
++        }
+         if (!client_id) {
+             throw new Error("client_id is required");
+         }
+@@ -199,7 +201,7 @@ class OAuth2User {
+             code_challenge_method: options.code_challenge_method || "plain",
+             code_challenge,
+         });
+-        return url.toString();
++        return [url.toString(), __classPrivateFieldGet(this, _OAuth2User_code_verifier, "f")];
+     }
+     async getAuthHeader() {
+         if (!this.token?.access_token)
