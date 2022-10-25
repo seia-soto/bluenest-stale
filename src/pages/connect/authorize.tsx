@@ -1,14 +1,13 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { Button, Center, Container, Heading, List, ListIcon, ListItem, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useT } from 'talkr'
-import { goto } from '../../utils/pages'
+import { useGoto } from '../../hooks'
 
 const AuthorizeConnect: NextPage = () => {
   const { T } = useT()
-  const router = useRouter()
+  const { goto } = useGoto()
   const [isLoading, setLoading] = useState<boolean>(false)
 
   return (
@@ -36,13 +35,13 @@ const AuthorizeConnect: NextPage = () => {
         </List>
         <Center paddingY={4}>
           <Stack direction='column'>
-            <Button onClick={goto(router, '/api/session/revoke')}>{T('connect.authorize.action.deny')}</Button>
+            <Button onClick={goto('/api/connect/revoke')}>{T('connect.authorize.action.deny')}</Button>
             <Button
               isLoading={isLoading}
               colorScheme='purple'
               onClick={() => {
                 setLoading(true)
-                goto(router, '/api/connect/request')()
+                goto('/api/connect/twitter/request')()
               }}
             >
               {T('connect.authorize.action.allow')}

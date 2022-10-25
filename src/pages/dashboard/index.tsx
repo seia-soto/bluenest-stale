@@ -1,23 +1,17 @@
 import { Button, Container, Heading, Input, InputGroup, InputRightElement, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Stack, Text, useDisclosure } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { FC, FormEventHandler, useEffect, useRef, useState } from 'react'
 import { useT } from 'talkr'
 import { Tweet } from '../../components/Card'
 import { EaseOnUp } from '../../components/Transition'
-import { EResponseStatus } from '../../models/types/api'
-import { TTwitterRecentTweets } from '../../models/types/twitter'
-import { goto, useFetch } from '../../utils/pages'
+import { useFetch } from '../../hooks'
+import { TTwitterTimelineResponse } from '../../models/api/specifications'
 
 const RecentTweets: FC = () => {
-  const router = useRouter()
-  const { isLoading, isError, status, data } = useFetch<TTwitterRecentTweets>(
+  const { isLoading, isError, status, response } = useFetch<TTwitterTimelineResponse>(
     '/api/twitter/recents',
     {
       method: 'POST'
-    },
-    {
-      cacheTtl: 15 * 1000
     }
   )
   const [isActive, setActive] = useState<boolean>(false)
@@ -39,14 +33,14 @@ const RecentTweets: FC = () => {
     )
   }
 
-  if (status === EResponseStatus.AuthorizationRequired) {
+  if (status === 403) {
     return (
       <Stack direction='column'>
         <Text textAlign='center'>
           {T('dashboard.recents.reauthorizationRequired.statusText.a')}<br />
           {T('dashboard.recents.reauthorizationRequired.statusText.b')}
         </Text>
-        <Button colorScheme='purple' onClick={goto(router, '/api/connect/request')}>
+        <Button colorScheme='purple'>
           {T('dashboard.recents.reauthorizationRequired.action.continue')}
         </Button>
       </Stack>
@@ -69,11 +63,8 @@ const RecentTweets: FC = () => {
         transition={'opacity ease .4s'}
       >
         {
-          data.map(entry => (
-            <div
-              key={entry.id}
-              onClick={goto(router, `/dashboard/thread/import?tweet=${entry.id}`)}
-            >
+          response.payload.map(entry => (
+            <div key={entry.id}>
               <Tweet tweet={entry} />
             </div>
           ))

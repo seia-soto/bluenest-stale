@@ -1,12 +1,11 @@
 import { Button, Center, Container, Heading, Stack } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { useT } from 'talkr'
-import { goto } from '../../utils/pages'
+import { useGoto } from '../../hooks'
 
 const RevokeConnect: NextPage = () => {
+  const { goto } = useGoto()
   const { T } = useT()
-  const router = useRouter()
 
   return (
     <>
@@ -19,7 +18,7 @@ const RevokeConnect: NextPage = () => {
         </Stack>
         <Center paddingY={4}>
           <Stack direction='column'>
-            <Button onClick={goto(router, '/')}>{T('connect.revoke.action.back')}</Button>
+            <Button onClick={goto('/')}>{T('connect.revoke.action.back')}</Button>
             <Button onClick={() => { location.href = 'https://twitter.com/settings/connected_apps' }}>{T('connect.revoke.action.complete')}</Button>
           </Stack>
         </Center>

@@ -2,12 +2,11 @@ import { Box, Button, Container, Heading, Stack } from '@chakra-ui/react'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import { NextPage } from 'next'
 import { useT } from 'talkr'
-import { useRouter } from 'next/router'
-import { goto } from '../utils/pages'
+import { useGoto } from '../hooks'
 
 const Main: NextPage = () => {
+  const { goto } = useGoto()
   const { T } = useT()
-  const router = useRouter()
 
   return (
     <>
@@ -33,7 +32,7 @@ const Main: NextPage = () => {
             colorScheme='purple'
             rightIcon={<ArrowForwardIcon />}
             margin='24px 0'
-            onClick={goto(router, '/api/session/validate', true)}
+            onClick={goto('/api/connect/twitter/request')}
           >
             {T('about.action')}
           </Button>

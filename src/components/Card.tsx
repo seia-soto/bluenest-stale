@@ -1,8 +1,8 @@
 import { Avatar, Box, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react'
 import { FC, PropsWithChildren } from 'react'
-import { ITwitterTweet } from '../models/types/twitter'
+import { TTwitterTimelineResponse } from '../models/api/specifications'
 
-export const Tweet: FC<PropsWithChildren<{ tweet: ITwitterTweet }>> = ({ tweet }) => {
+export const Tweet: FC<PropsWithChildren<{ tweet: TTwitterTimelineResponse['payload'][number] }>> = ({ tweet }) => {
   return (
     <Box
       w='sm'
@@ -16,23 +16,23 @@ export const Tweet: FC<PropsWithChildren<{ tweet: ITwitterTweet }>> = ({ tweet }
       cursor='pointer'
     >
       <Stack direction='row'>
-        <Avatar src={tweet.user.avatar.url} />
+        <Avatar src={tweet.user.profile_image_url_https} />
         <Flex direction='column' justifyContent='center'>
           <Heading as='h3' size='sm'>
             {tweet.user.name}
           </Heading>
-          <Text>@{tweet.user.username}</Text>
+          <Text>@{tweet.user.screen_name}</Text>
         </Flex>
       </Stack>
-      <Text color='gray.700' marginY={4}>{tweet.text}</Text>
+      <Text color='gray.700' marginTop={4}>{tweet.full_text.slice(...tweet.display_text_range)}</Text>
       {
-        tweet.attachments.length > 0 && (
+        tweet?.entities?.media?.length > 0 && (
           <Image
             objectFit='cover'
             width='100%'
             maxHeight='100%'
             rounded='lg'
-            src={tweet.attachments[0].url}
+            src={tweet.entities.media[0].media_url_https}
           />
         )
       }

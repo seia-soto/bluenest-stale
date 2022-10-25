@@ -1,9 +1,8 @@
 import { ArrowUpDownIcon } from '@chakra-ui/icons'
 import { ButtonGroup, Container, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Link, List, ListItem, Stack, useDisclosure } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
 import { FC, PropsWithChildren, useRef } from 'react'
 import { useT } from 'talkr'
-import { goto } from '../utils/pages'
+import { useGoto } from '../hooks'
 
 const NavigationStack: FC<PropsWithChildren<{ heading: string }>> = ({ children, heading }) => {
   return (
@@ -15,7 +14,7 @@ const NavigationStack: FC<PropsWithChildren<{ heading: string }>> = ({ children,
 }
 
 export const Navbar: FC = () => {
-  const router = useRouter()
+  const { goto } = useGoto()
   const buttonRef = useRef(null)
   const { T } = useT()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -32,7 +31,7 @@ export const Navbar: FC = () => {
           justifyContent='center'
           alignItems='center'
         >
-          <Heading as='h1' size='md' onClick={goto(router, '/')} cursor='pointer'>
+          <Heading as='h1' size='md' onClick={goto('/')} cursor='pointer'>
             Bluenest
           </Heading>
           <ButtonGroup marginLeft='auto'>
