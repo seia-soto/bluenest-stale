@@ -6,7 +6,6 @@
     "account": {
       "heading": "계정",
       "menu": {
-        "requestSessionForcibly": "강제 로그인",
         "revokeSession": "로그아웃"
       }
     }

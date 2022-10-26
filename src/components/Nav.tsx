@@ -90,7 +90,6 @@ export const Navbar: FC = () => {
                 </NavigationStack>
                 <NavigationStack heading={T('nav.account.heading')}>
                   <List>
-                    <ListItem><Link href='/connect/authorize'>{T('nav.account.menu.requestSessionForcibly')}</Link></ListItem>
                     <ListItem><Link href='/connect/revoke'>{T('nav.account.menu.revokeSession')}</Link></ListItem>
                   </List>
                 </NavigationStack>
