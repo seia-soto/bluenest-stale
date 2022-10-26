@@ -90,8 +90,8 @@ export const Navbar: FC = () => {
                 </NavigationStack>
                 <NavigationStack heading={T('nav.account.heading')}>
                   <List>
-                    <ListItem><Link href='/api/connect/request'>{T('nav.account.menu.requestSessionForcibly')}</Link></ListItem>
-                    <ListItem><Link href='/api/session/revoke'>{T('nav.account.menu.revokeSessionForcibly')}</Link></ListItem>
+                    <ListItem><Link href='/connect/authorize'>{T('nav.account.menu.requestSessionForcibly')}</Link></ListItem>
+                    <ListItem><Link href='/connect/revoke'>{T('nav.account.menu.revokeSession')}</Link></ListItem>
                   </List>
                 </NavigationStack>
               </Flex>

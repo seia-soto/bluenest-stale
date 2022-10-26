@@ -1,5 +1,6 @@
 import { deleteCookie, setCookie } from 'cookies-next'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { ECookieNames } from '../../../../models/api/cookies'
 import { createClient } from '../../../../models/server/externs/twitter'
 import { IEncodedToken, IOAuthPayload, obtain, signer } from '../../../../models/server/jwt'
 
@@ -13,7 +14,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     return res.redirect('/connect/twitter/error')
   }
 
-  const jwt = obtain<IOAuthPayload & IEncodedToken>('a', req)
+  const jwt = obtain<IOAuthPayload & IEncodedToken>(ECookieNames.postAuthorization, req)
 
   if (
     !jwt ||
@@ -22,7 +23,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
     return res.redirect('/connect/twitter/error')
   }
 
-  deleteCookie('a', { req, res })
+  deleteCookie(ECookieNames.postAuthorization, { req, res })
 
   const client = createClient({
     accessToken: jwt.oauth.token,
@@ -50,7 +51,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
       }
     })
 
-    setCookie('b', kJwt, { req, res })
+    setCookie(ECookieNames.general, kJwt, { req, res, httpOnly: true, secure: false })
 
     return res.redirect('/dashboard')
   } catch (error) {

@@ -32,7 +32,7 @@ const Main: NextPage = () => {
             colorScheme='purple'
             rightIcon={<ArrowForwardIcon />}
             margin='24px 0'
-            onClick={goto('/api/connect/twitter/request')}
+            onClick={goto('/connect/authorize')}
           >
             {T('about.action')}
           </Button>

@@ -4,11 +4,12 @@ import { FC, FormEventHandler, useEffect, useRef, useState } from 'react'
 import { useT } from 'talkr'
 import { Tweet } from '../../components/Card'
 import { EaseOnUp } from '../../components/Transition'
-import { useFetch } from '../../hooks'
+import { useFetch, useGoto } from '../../hooks'
 import { TTwitterTimelineResponse } from '../../models/api/specifications'
 
 const RecentTweets: FC = () => {
-  const { isLoading, isError, status, response } = useFetch<TTwitterTimelineResponse>(
+  const { goto } = useGoto()
+  const { isLoading, isError, response } = useFetch<TTwitterTimelineResponse>(
     '/api/twitter/recents',
     {
       method: 'POST'
@@ -27,23 +28,13 @@ const RecentTweets: FC = () => {
     return null
   }
 
+  if (!response.payload.length) {
+    return null
+  }
+
   if (isError) {
     return (
       <Text textAlign='center'>{T('_.error')}</Text>
-    )
-  }
-
-  if (status === 403) {
-    return (
-      <Stack direction='column'>
-        <Text textAlign='center'>
-          {T('dashboard.recents.reauthorizationRequired.statusText.a')}<br />
-          {T('dashboard.recents.reauthorizationRequired.statusText.b')}
-        </Text>
-        <Button colorScheme='purple'>
-          {T('dashboard.recents.reauthorizationRequired.action.continue')}
-        </Button>
-      </Stack>
     )
   }
 
@@ -64,7 +55,7 @@ const RecentTweets: FC = () => {
       >
         {
           response.payload.map(entry => (
-            <div key={entry.id}>
+            <div key={entry.id_str} onClick={goto('/dashboard/import/thread/' + entry.id_str)}>
               <Tweet tweet={entry} />
             </div>
           ))
@@ -79,18 +70,24 @@ const ManualTweet: FC = () => {
   const linkRef = useRef<HTMLInputElement>(null)
   const { T } = useT()
   const { isOpen, onToggle, onClose } = useDisclosure()
+  const { goto } = useGoto()
 
   const submitLinkAfterValidate: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
 
     const value: string = linkRef.current.value
-    const kIsValid = /https:\/\/twitter\.com\/\w+\/status\/\d+/.test(value)
+    const pattern = /https:\/\/twitter\.com\/\w+\/status\/(\d+)/
+    const kIsValid = pattern.test(value)
 
     setValid(kIsValid)
 
     if (!(isOpen || kIsValid)) {
       onToggle()
     }
+
+    const [, id] = pattern.exec(value)
+
+    goto('/dashboard/import/thread/' + id)()
   }
 
   useEffect(() => {

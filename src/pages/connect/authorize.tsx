@@ -1,14 +1,21 @@
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { Button, Center, Container, Heading, List, ListIcon, ListItem, Stack } from '@chakra-ui/react'
-import { NextPage } from 'next'
-import { useState } from 'react'
+import { setCookie } from 'cookies-next'
+import { NextPage, NextPageContext } from 'next'
+import { useEffect, useState } from 'react'
 import { useT } from 'talkr'
 import { useGoto } from '../../hooks'
+import { ECookieNames } from '../../models/api/cookies'
+import { persistStorage } from '../../models/client/kv'
 
 const AuthorizeConnect: NextPage = () => {
   const { T } = useT()
   const { goto } = useGoto()
   const [isLoading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    persistStorage.source.clear()
+  }, [])
 
   return (
     <>
@@ -35,7 +42,7 @@ const AuthorizeConnect: NextPage = () => {
         </List>
         <Center paddingY={4}>
           <Stack direction='column'>
-            <Button onClick={goto('/api/connect/revoke')}>{T('connect.authorize.action.deny')}</Button>
+            <Button onClick={goto('/connect/revoke')}>{T('connect.authorize.action.deny')}</Button>
             <Button
               isLoading={isLoading}
               colorScheme='purple'
@@ -51,6 +58,21 @@ const AuthorizeConnect: NextPage = () => {
       </Container>
     </>
   )
+}
+
+export const getServerSideProps = async (ctx: NextPageContext) => {
+  const { req, res } = ctx
+
+  setCookie(ECookieNames.preAuthorization, '1', {
+    req,
+    res,
+    secure: false,
+    httpOnly: true
+  })
+
+  return {
+    props: {}
+  }
 }
 
 export default AuthorizeConnect

@@ -1,11 +1,19 @@
 import { Button, Center, Container, Heading, Stack } from '@chakra-ui/react'
-import { NextPage } from 'next'
+import { deleteCookie } from 'cookies-next'
+import { NextPage, NextPageContext } from 'next'
+import { useEffect } from 'react'
 import { useT } from 'talkr'
 import { useGoto } from '../../hooks'
+import { ECookieNames } from '../../models/api/cookies'
+import { persistStorage } from '../../models/client/kv'
 
 const RevokeConnect: NextPage = () => {
   const { goto } = useGoto()
   const { T } = useT()
+
+  useEffect(() => {
+    persistStorage.source.clear()
+  }, [])
 
   return (
     <>
@@ -25,6 +33,17 @@ const RevokeConnect: NextPage = () => {
       </Container>
     </>
   )
+}
+
+export const getServerSideProps = async (ctx: NextPageContext) => {
+  const { req, res } = ctx
+
+  deleteCookie(ECookieNames.general, { req, res })
+  deleteCookie(ECookieNames.preAuthorization, { req, res })
+
+  return {
+    props: {}
+  }
 }
 
 export default RevokeConnect

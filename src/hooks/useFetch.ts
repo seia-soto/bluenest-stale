@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useReducer } from 'react'
 import { IResponse, IResponseWithData } from '../models/api/protocol'
+import { persistStorage } from '../models/client/kv'
 
 export interface IFetchState<T extends IResponse = IResponseWithData> {
   isLoading: boolean
   isError: boolean
-  isCached: boolean
   status: number
   response: T
 }
@@ -12,7 +12,6 @@ export interface IFetchState<T extends IResponse = IResponseWithData> {
 export const enum EFetchActionTypes {
   setIsLoading = 0,
   setIsError,
-  setIsCached,
   setStatus,
   setResponse
 }
@@ -24,7 +23,6 @@ export interface IFetchAction<A extends EFetchActionTypes, T> {
 
 export type TFetchAction<T extends IResponse = IResponseWithData> = IFetchAction<EFetchActionTypes.setIsLoading, IFetchState['isLoading']>
 | IFetchAction<EFetchActionTypes.setIsError, IFetchState['isError']>
-| IFetchAction<EFetchActionTypes.setIsCached, IFetchState['isCached']>
 | IFetchAction<EFetchActionTypes.setStatus, IFetchState['status']>
 | IFetchAction<EFetchActionTypes.setResponse, IFetchState<T>['response']>
 
@@ -39,11 +37,6 @@ const reducer = <T extends IResponse = IResponseWithData>(state: IFetchState<T>,
     }
     case EFetchActionTypes.setIsError: {
       kState.isError = action.payload
-
-      break
-    }
-    case EFetchActionTypes.setIsCached: {
-      kState.isCached = action.payload
 
       break
     }
@@ -65,54 +58,9 @@ const reducer = <T extends IResponse = IResponseWithData>(state: IFetchState<T>,
 const initialState = {
   isLoading: true,
   isError: false,
-  isCached: false,
   status: 200,
   response: null
 }
-
-class MemoryStorage {
-  source: Map<string, string>
-
-  getItem (key: string) {
-    return this.source.get(key)
-  }
-
-  setItem (key: string, value: string) {
-    return this.source.set(key, value)
-  }
-
-  keys () {
-
-  }
-}
-
-class PersistStorage {
-  source: Storage | MemoryStorage
-
-  constructor () {
-    if (typeof window === 'undefined') {
-      this.source = new MemoryStorage()
-    } else if (typeof window.localStorage !== 'undefined') {
-      this.source = window.localStorage
-    } else if (typeof window.sessionStorage !== 'undefined') {
-      this.source = window.sessionStorage
-    }
-
-    if (!this.source) {
-      throw new Error('Failed to initiate persist storage for fetch cache!')
-    }
-  }
-
-  get (key: string) {
-    return this.source.getItem(key)
-  }
-
-  set (key: string, value: string) {
-    return this.source.setItem(key, value)
-  }
-}
-
-const persistStorage = new PersistStorage()
 
 export interface IFetchCache<T extends IResponse = IResponseWithData> {
   exp: number
@@ -149,7 +97,9 @@ export default <T extends IResponse = IResponseWithData>(url: string, init?: Req
       const response = await fetch(url, init)
 
       if (response.status === 403) {
-        location.href = '/api/connect/twitter/request'
+        persistStorage.clear()
+
+        location.href = '/connect/authorize'
       }
 
       const json: T = await response.json()
