@@ -1,4 +1,4 @@
-import { Static, TSchema, Type } from '@sinclair/typebox'
+import { Static, TObject, TSchema, Type } from '@sinclair/typebox'
 
 const Nullable = <T extends TSchema>(schema: T) => Type.Union([schema, Type.Null()])
 
@@ -33,10 +33,10 @@ export const enum EPostFragmentType {
   Code
 }
 
-const createPostFragment = <Type extends number, Options extends TSchema>(type: Type, options?: Options) => Type.Object({
-  type: Type.Strict(Type.Literal(type)),
+const createPostFragment = <Type extends number, Options extends TObject>(type: Type, options: Options) => Type.Object({
+  type: Type.Literal(type),
   source: Type.String(),
-  options: options ?? Type.Null()
+  options
 })
 
 const PostMediaHeight = Type.Number({

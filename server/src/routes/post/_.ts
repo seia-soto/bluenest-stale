@@ -1,5 +1,6 @@
 import { Type } from '@sinclair/typebox'
 import { decode, encode } from 'cbor'
+import { Response } from '../../../protocol/definitions.js'
 import { Empty, ResponseWithData } from '../../../protocol/generators.js'
 import { Post, PostFragment, TPostFragment } from '../../../protocol/schemas.js'
 import { db, posts } from '../../models/db/provider.js'
@@ -20,7 +21,7 @@ const handler: TFastifyTypedPluginCallback = (fastify, _opts, done) => {
     handler: async (request, reply) => {
       const response = Empty()
 
-      const id = Number(request.params.id)
+      const id: number = Number(request.params.id)
 
       if (isNaN(id)) {
         void reply.status(404)
@@ -61,12 +62,14 @@ const handler: TFastifyTypedPluginCallback = (fastify, _opts, done) => {
         id: Type.String()
       }),
       body: Type.Object({
-        tweet_id: Type.String(),
         content: Type.Array(PostFragment),
         background: Type.String(),
         exert: Type.String(),
         is_published: Type.Boolean()
-      })
+      }),
+      response: {
+        200: Response
+      }
     },
     handler: async (request, reply) => {
       const response = Empty()
@@ -107,7 +110,10 @@ const handler: TFastifyTypedPluginCallback = (fastify, _opts, done) => {
     schema: {
       params: Type.Object({
         id: Type.String()
-      })
+      }),
+      response: {
+        200: Response
+      }
     },
     handler: async (request, reply) => {
       const response = Empty()

@@ -38,7 +38,7 @@ const handler: TFastifyTypedPluginCallback = (fastify, _opts, done) => {
         200: Response
       }
     },
-    handler: async (request, reply) => await db.tx(async t => {
+    handler: async (request, _reply) => await db.tx(async t => {
       const response = Empty()
 
       await users(t).update({ id: request.session.user.id }, request.body)
