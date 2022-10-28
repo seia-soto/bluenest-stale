@@ -17,3 +17,10 @@ export const resolveJwtOnRequest: onRequestAsyncHookHandler = async (request, re
 
   request.session = jwt
 }
+
+export const tryResolvingJwtOnRequest: onRequestAsyncHookHandler = async (request, _reply) => {
+  const jwt = obtain<TEncodedUserPayload>(request.cookies[ECookieName.general] ?? '', UserPayloadChecker)
+
+  // @ts-expect-error
+  request.session = jwt
+}

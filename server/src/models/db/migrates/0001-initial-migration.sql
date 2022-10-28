@@ -8,8 +8,8 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "posts" (
-  -- // https://developer.twitter.com/en/blog/community/2020/getting-to-the-canonical-url-for-a-tweet
   id SERIAL PRIMARY KEY NOT NULL,
+  -- // https://developer.twitter.com/en/blog/community/2020/getting-to-the-canonical-url-for-a-tweet
   -- BigInt
   tweet_id TEXT NOT NULL CONSTRAINT unique_tweet_id UNIQUE,
   user_id SERIAL NOT NULL,

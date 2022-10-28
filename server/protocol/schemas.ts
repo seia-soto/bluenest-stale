@@ -86,3 +86,14 @@ export const Post = Type.Object({
   exert: Type.String(),
   is_published: Type.Boolean()
 })
+
+export type TPost = Static<typeof Post>
+
+export const User = Type.Object({
+  id: Type.Number(),
+  name: Type.String(),
+  avatar: Type.String(),
+  twitter_id: Type.String()
+})
+
+export type TUser = Static<typeof User>
